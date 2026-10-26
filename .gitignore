@@ -1,0 +1,17 @@
+# Environment and credentials
+.env
+*.secret.*
+*.key
+*.pem
+
+# Output & Scan Dumps
+/scans/
+/output/
+*.log
+*.tmp
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

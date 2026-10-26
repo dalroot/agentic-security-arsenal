@@ -1,0 +1,33 @@
+rules:
+  - id: wp-open-rest-route-permission
+    languages: [php]
+    severity: WARNING
+    message: "REST route registered with '__return_true' or unauthenticated permission callback. Verify if this endpoint exposes sensitive data or actions without authentication."
+    patterns:
+      - pattern: |
+          register_rest_route($NAMESPACE, $ROUTE, [
+            ...,
+            'permission_callback' => '__return_true',
+            ...
+          ], ...)
+
+  - id: wp-raw-db-query-without-prepare
+    languages: [php]
+    severity: ERROR
+    message: "Direct database query executed without $wpdb->prepare(). This can lead to SQL Injection if dynamic parameters are concatenated."
+    patterns:
+      - pattern-either:
+          - pattern: $WPDB->query($QUERY, ...)
+          - pattern: $WPDB->get_results($QUERY, ...)
+          - pattern: $WPDB->get_row($QUERY, ...)
+          - pattern: $WPDB->get_var($QUERY, ...)
+      - pattern-not: $WPDB->query($WPDB->prepare(...), ...)
+      - pattern-not: $WPDB->get_results($WPDB->prepare(...), ...)
+      - pattern-not: $WPDB->get_row($WPDB->prepare(...), ...)
+      - pattern-not: $WPDB->get_var($WPDB->prepare(...), ...)
+
+  - id: wp-insecure-unserialize
+    languages: [php]
+    severity: ERROR
+    message: "Use of unserialize() can lead to PHP Object Injection and Remote Code Execution. Consider json_decode() or specify allowed_classes: false."
+    pattern: unserialize(...)
