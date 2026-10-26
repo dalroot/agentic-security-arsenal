@@ -39,12 +39,33 @@ flowchart TD
 
 ---
 
-## 2. Core Execution Principles for Agents
+## 2. Core Execution Principles & Agent Reporting Policy
 
-1. **Structured Outputs First:** Always prefer tools and CLI flags that output structured JSON (e.g. `httpx -json`, `nuclei -je`, `semgrep --json`). This allows deterministic parsing and zero false-positive hallucination.
-2. **Safe Probing & Rate Limiting:** Never flood targets with blind brute-force. Respect platform scope rules, rate limits, and safe harbor boundaries.
-3. **No Unsubstantiated Claims:** Distinguish strictly between a raw template/blank form and populated data, or between direct origin access and cached search snippets. Always confirm the actual network boundary.
-4. **Reproducible PoCs:** Every finding must be backed by a clear, reproducible proof-of-concept (cURL command, HTTP request/response, or source code file and line reference).
+To guarantee elite, professional, and hype-free deliverables, every agent invoking this skill MUST adhere to the following 4 inviolable rules:
+
+### Rule 1: Strict Severity Tiering (No Inflation)
+Categorize findings strictly using CVSS v3.1 and Bugcrowd VRT:
+- **Critical (9.0 - 10.0):** Unauthenticated RCE, Full Account Takeover, SQLi on core auth.
+- **High (7.0 - 8.9):** Authenticated RCE, Sensitive Data Exposure (PII/Tokens), High-impact IDOR.
+- **Medium (4.0 - 6.9):** Stored XSS, CSRF on state changes, Information Disclosure of internal structure/CUI snippets.
+- **Low (0.1 - 3.9):** Reflected XSS with user interaction, open redirects, missing security headers with weak exploitability.
+- **Informational / None (0.0):** Best-practice advice, public asset indexing.
+
+### Rule 2: The False-Positive Transparency Gate (Mandatory)
+If a tool output or finding is ambiguous, unreachable, or mitigated by an underlying control:
+- **DO NOT** claim it as an exploit.
+- **MUST EXPLICITLY DECLARE:**
+  > ⚠️ **Status: False Positive / Non-Exploitable**  
+  > **Technical Reason:** [Explain exactly why: e.g. "Endpoint returns 403 at origin", "Form is an unpopulated blank template", "Nonce check prevents unauthorized state modification"].
+
+### Rule 3: Zero-Clone Architecture
+- Do NOT clone heavy third-party git repositories.
+- Use pre-built single-binary packages (`subfinder`, `httpx`, `nuclei`, `semgrep`).
+- Reference remote rulesets on-demand (`--config p/php`, `nuclei -update-templates`).
+
+### Rule 4: Structured Output & PoC Requirement
+- Never report without a reproducible cURL command, raw HTTP request/response, or exact file/line source code reference.
+- Prefer `-json` / `-je` flags for programmatic parsing.
 
 ---
 
