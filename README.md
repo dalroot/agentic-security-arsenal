@@ -52,7 +52,7 @@ flowchart TD
 
 ### 1. Clone the Arsenal
 ```bash
-git clone https://github.com/your-username/agentic-security-arsenal.git
+git clone https://github.com/dalroot/agentic-security-arsenal.git
 cd agentic-security-arsenal
 ```
 
